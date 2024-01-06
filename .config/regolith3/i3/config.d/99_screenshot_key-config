@@ -1,0 +1,6 @@
+## PrintScreen: selection
+## Ctrl+PrintScreen: window
+## Ctrl+Shift+PrintScreen: screen
+bindsym --release Print exec --no-startup-id "flameshot gui"
+#bindsym --release Ctrl+Print exec --no-startup-id "scrot -u - | xclip -selection clipboard -target image/png"
+#bindsym --release Ctrl+Shift+Print exec --no-startup-id "scrot - | xclip -selection clipboard -target image/png"

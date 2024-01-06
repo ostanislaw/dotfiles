@@ -1,0 +1,15 @@
+!regolith.wallpaper.file: ~/bin/wallpapers/carina_nebula.png
+regolith.wallpaper.file: ~/bin/wallpapers/pillars_of_creation.png
+regolith-look refresh
+
+#define color_faded_red      #b83939
+
+!wm.client.focused.color.border: color_red
+!wm.client.focused.color.background: color_red
+!wm.client.focused.color.text: color_red
+wm.client.focused.color.indicator: color_faded_red
+wm.client.focused.color.child_border: color_faded_red
+
+!regolith.look.path: /usr/share/regolith-look/ayu-dark
+regolith.look.path: /usr/share/regolith-look/lascaille
+regolith.sway.unsupported_gpu: true
