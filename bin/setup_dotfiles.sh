@@ -12,3 +12,6 @@ if [ $? = 0 ]; then
 fi;
 config checkout
 config config status.showUntrackedFiles no
+
+cp /etc/skel/.bashrc $HOME
+$HOME/install_essential_tools.sh
