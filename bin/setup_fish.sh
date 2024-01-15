@@ -1,10 +1,6 @@
 #!/bin/fish
-#curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+# plugins would be installed by fisher update based on ~/.config/fish/fish_plugins
 fisher update
-#fisher install jorgebucaran/fisher
-#fisher install IlanCosman/tide@v6
-#fisher install franciscolourenco/done
-#fisher install jethrokuan/z
 
 
