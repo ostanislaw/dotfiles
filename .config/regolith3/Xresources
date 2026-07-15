@@ -1,15 +1,26 @@
 !regolith.wallpaper.file: ~/bin/wallpapers/carina_nebula.png
-regolith.wallpaper.file: ~/bin/wallpapers/pillars_of_creation.png
-regolith-look refresh
+!regolith.wallpaper.file: ~/bin/wallpapers/pillars_of_creation.png
+!regolith-look refresh
 
 #define color_faded_red      #b83939
 
 !wm.client.focused.color.border: color_red
 !wm.client.focused.color.background: color_red
 !wm.client.focused.color.text: color_red
-wm.client.focused.color.indicator: color_faded_red
-wm.client.focused.color.child_border: color_faded_red
+!wm.client.focused.color.indicator: color_faded_red
+!wm.client.focused.color.child_border: color_faded_red
 
-!regolith.look.path: /usr/share/regolith-look/ayu-dark
+!regolith.sway.unsupported_gpu: true
+!regolith.look.path: /usr/share/regolith-look/nord
+Xcursor.size: 32
 regolith.look.path: /usr/share/regolith-look/lascaille
-regolith.sway.unsupported_gpu: true
+
+! === Rofication blinking notification bell (managed) ===
+! Distinct bell glyphs per state
+i3xrocks.label.notify.none:  
+i3xrocks.label.notify.some:  
+i3xrocks.label.notify.error: 
+! Blink phase colors (alert vs dimmed)
+i3xrocks.rofication.alert.color: #FFD580
+i3xrocks.rofication.critical.color: #BF616A
+i3xrocks.rofication.dim.color: #6B7089

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# rofication-blinker: drives the blinking of the i3xrocks "rofication" block.
+#
+# The rofication daemon exposes no push events, so we poll its unix socket.
+# While there are notifications, we toggle a phase file and signal i3xrocks
+# (SIGRTMIN+5) every ACTIVE_INTERVAL seconds so the block re-renders and
+# alternates its colour. When there are none, we settle the block on its
+# steady "0" state and poll slowly until notifications reappear.
+
+set -u
+
+SOCK="/tmp/rofi_notification_daemon"
+PHASE_FILE="/tmp/rofication-blink-phase"
+LOCK_FILE="/tmp/rofication-blinker.lock"
+SIGNUM=5                 # matches signal=5 in conf.d/80_rofication -> SIGRTMIN+5
+ACTIVE_INTERVAL=0.7      # blink toggle period while notifications exist
+IDLE_INTERVAL=2          # poll period while there are none
+
+# Single-instance guard.
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+    exit 0
+fi
+
+signal_block() {
+    pkill -RTMIN+"$SIGNUM" i3xrocks 2>/dev/null || true
+}
+
+get_count() {
+    # Prints total notification count, or empty string if daemon unreachable.
+    local resp
+    resp=$(echo "num" | nc -U "$SOCK" 2>/dev/null) || { echo ""; return; }
+    [ -z "$resp" ] && { echo ""; return; }
+    echo "$resp" | cut -d, -f1
+}
+
+phase=0
+while true; do
+    count=$(get_count)
+
+    if [ -n "$count" ] && [ "$count" -gt 0 ] 2>/dev/null; then
+        # Toggle blink phase and re-render the block.
+        if [ "$phase" = "1" ]; then phase=0; else phase=1; fi
+        echo "$phase" > "$PHASE_FILE"
+        signal_block
+        sleep "$ACTIVE_INTERVAL"
+    else
+        # No notifications (or daemon down): settle on steady state once.
+        if [ "$phase" != "0" ]; then
+            phase=0
+            echo "0" > "$PHASE_FILE"
+            signal_block
+        fi
+        sleep "$IDLE_INTERVAL"
+    fi
+done

@@ -1,0 +1,2 @@
+# Start the rofication status-bar blink driver
+exec --no-startup-id /home/u638526/.config/regolith3/i3xrocks/scripts/rofication-blinker

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# Modified copy of the packaged i3xrocks rofication script
+# (i3xrocks-rofication 5.5.3-1regolith-noble).
+#
+# Changes vs. upstream:
+#   * The bell label is colored with the STATE color (alert/critical/dim)
+#     instead of the always-muted label color, so the bell itself changes
+#     colour.
+#   * When notifications exist, the bell alternates between an "alert" and a
+#     "dim" colour on each invocation, driven by a phase file toggled by the
+#     rofication-blinker helper (via SIGRTMIN+5). This produces a blink.
+#
+# Output states:
+#   0 notifications  -> outline bell, muted colour, "0"        (no blink)
+#   >0 notifications -> filled bell, alert/critical <-> dim    (blinks)
+#   daemon down      -> bell-slash, critical colour, "?"
+
+set -Eeu -o pipefail
+
+PHASE_FILE="/tmp/rofication-blink-phase"
+
+VALUE_FONT=${font:-$(xrescat i3xrocks.value.font "JetBrains Mono Medium 13")}
+
+# Colours
+MUTED_COLOR=${label_color:-$(xrescat i3xrocks.label.color "#7B8394")}
+ALERT_COLOR=$(xrescat i3xrocks.rofication.alert.color "#FFD580")
+CRIT_COLOR=$(xrescat i3xrocks.rofication.critical.color "#BF616A")
+DIM_COLOR=$(xrescat i3xrocks.rofication.dim.color "#6B7089")
+
+# Glyphs
+ICON_NONE=$(xrescat i3xrocks.label.notify.none N)
+ICON_SOME=$(xrescat i3xrocks.label.notify.some N)
+ICON_ERROR=$(xrescat i3xrocks.label.notify.error N)
+
+BUTTON="${button:-}"
+export BUTTON
+
+# Read blink phase (0/1); default 0 if missing/garbage.
+PHASE=0
+if [ -r "$PHASE_FILE" ]; then
+    read -r PHASE < "$PHASE_FILE" || PHASE=0
+    [ "$PHASE" = "1" ] || PHASE=0
+fi
+
+# Query the daemon. If it is unreachable, show the error state.
+if ! response=$(echo "num" | nc -U /tmp/rofi_notification_daemon 2>/dev/null); then
+    response=""
+fi
+
+if [ -z "$response" ]; then
+    ICON="$ICON_ERROR"
+    ICON_COLOR="$CRIT_COLOR"
+    VALUE_COLOR="$CRIT_COLOR"
+    LABEL_VALUE="?"
+else
+    NOTIFICATION_COUNT=$(echo "$response" | cut -d, -f1)
+    CRIT_NOTIFICATION_COUNT=$(echo "$response" | cut -d, -f2)
+
+    if [ "$CRIT_NOTIFICATION_COUNT" -gt 0 ]; then
+        ICON="$ICON_SOME"
+        LABEL_VALUE="$CRIT_NOTIFICATION_COUNT/$NOTIFICATION_COUNT"
+        if [ "$PHASE" = "1" ]; then
+            ICON_COLOR="$CRIT_COLOR"; VALUE_COLOR="$CRIT_COLOR"
+        else
+            ICON_COLOR="$DIM_COLOR"; VALUE_COLOR="$DIM_COLOR"
+        fi
+    elif [ "$NOTIFICATION_COUNT" -gt 0 ]; then
+        ICON="$ICON_SOME"
+        LABEL_VALUE="$NOTIFICATION_COUNT"
+        if [ "$PHASE" = "1" ]; then
+            ICON_COLOR="$ALERT_COLOR"; VALUE_COLOR="$ALERT_COLOR"
+        else
+            ICON_COLOR="$DIM_COLOR"; VALUE_COLOR="$DIM_COLOR"
+        fi
+    else
+        ICON="$ICON_NONE"
+        ICON_COLOR="$MUTED_COLOR"
+        VALUE_COLOR="$MUTED_COLOR"
+        LABEL_VALUE="0"
+    fi
+fi
+
+echo "<span font_desc=\"${VALUE_FONT}\" color=\"${ICON_COLOR}\">${ICON}</span> <span font_desc=\"${VALUE_FONT}\" color=\"${VALUE_COLOR}\">${LABEL_VALUE}</span>"
+
+if [ "x${BUTTON}" == "x1" ]; then
+    ACTION=$(xrescat i3xrocks.action.rofication "ilia -p notifications")
+    /usr/bin/i3-msg -q "exec --no-startup-id $ACTION"
+fi
