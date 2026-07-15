@@ -115,3 +115,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# opencode
+export PATH=/home/u638526/.opencode/bin:$PATH
+
+# Pi
+export PATH="/home/u638526/.local/share/pi-node/node-v22.23.1-linux-x64/bin:$PATH"
