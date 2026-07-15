@@ -1,9 +1,0 @@
-# Rofication
-#
-# Displays notification count with a blinking bell when notifications exist.
-# Overrides the packaged /usr/share/i3xrocks/conf.d/80_rofication.
-[rofication]
-command=/home/u638526/.config/regolith3/i3xrocks/scripts/rofication
-markup=pango
-interval=10
-signal=5

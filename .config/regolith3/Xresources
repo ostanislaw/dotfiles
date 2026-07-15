@@ -14,13 +14,3 @@
 !regolith.look.path: /usr/share/regolith-look/nord
 Xcursor.size: 32
 regolith.look.path: /usr/share/regolith-look/lascaille
-
-! === Rofication blinking notification bell (managed) ===
-! Distinct bell glyphs per state
-i3xrocks.label.notify.none:  
-i3xrocks.label.notify.some:  
-i3xrocks.label.notify.error: 
-! Blink phase colors (alert vs dimmed)
-i3xrocks.rofication.alert.color: #FFD580
-i3xrocks.rofication.critical.color: #BF616A
-i3xrocks.rofication.dim.color: #6B7089
