@@ -6,8 +6,9 @@ local config = wezterm.config_builder()
 config.color_scheme = "Catppuccin Macchiato"
 
 -- Font (matches Alacritty / gnome-terminal)
-config.font = wezterm.font("SauceCodePro Nerd Font Mono")
-config.font_size = 16.0
+-- config.font = wezterm.font("SauceCodePro Nerd Font Mono")
+config.font = wezterm.font('JetBrains Mono')
+config.font_size = 14.0
 
 -- Shell
 config.default_prog = { "/usr/bin/fish", "-l" }
