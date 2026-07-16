@@ -17,6 +17,6 @@ config.default_prog = { "/usr/bin/fish", "-l" }
 config.scrollback_lines = 10000
 
 -- Hide the tab bar
-config.enable_tab_bar = false
+-- config.enable_tab_bar = false
 
 return config
