@@ -19,4 +19,6 @@ config.scrollback_lines = 10000
 -- Hide the tab bar
 -- config.enable_tab_bar = false
 
+config.use_fancy_tab_bar = false
+
 return config
