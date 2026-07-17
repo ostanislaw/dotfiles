@@ -1,4 +1,4 @@
--- WezTerm Keybindings Documentation by dragonlobster
+-- WezTerm Keybindings Documentation by dragonlobster (modified)
 -- ===================================================
 -- Leader Key:
 -- The leader key is set to CTRL + a, with a timeout of 2000 milliseconds (2 seconds).
