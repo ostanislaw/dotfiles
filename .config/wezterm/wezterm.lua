@@ -21,4 +21,33 @@ config.scrollback_lines = 10000
 
 config.use_fancy_tab_bar = false
 
+-- Align the retro tab bar with Catppuccin Macchiato
+config.colors = {
+  tab_bar = {
+    background = "#1e2030", -- mantle
+    active_tab = {
+      bg_color = "#8aadf4", -- blue
+      fg_color = "#1e2030",
+    },
+    inactive_tab = {
+      bg_color = "#494d64", -- surface1
+      fg_color = "#cad3f5", -- text
+    },
+    inactive_tab_hover = {
+      bg_color = "#363a4f", -- surface0
+      fg_color = "#cad3f5", -- text
+    },
+    new_tab = {
+      bg_color = "#1e2030",
+      fg_color = "#a5adcb",
+    },
+    new_tab_hover = {
+      bg_color = "#363a4f",
+      fg_color = "#cad3f5",
+    },
+  },
+}
+
+config.window_background_opacity = 0.95
+
 return config
