@@ -62,7 +62,7 @@ config.default_prog = { "/usr/bin/fish", "-l" }
 config.font = wezterm.font('JetBrains Mono')
 config.font_size = 14.0
 
-config.window_background_opacity = 0.90
+config.window_background_opacity = 0.80
 config.window_close_confirmation = "NeverPrompt"
 
 config.window_padding = {
